@@ -60,8 +60,6 @@ def json_to_xml(file_path, save_path):
     image_paths = file_paths
     json_paths = file_paths
 
-    
-
 #     for path_i in file_paths:
 #         if '.DS_Store' in path_i:
 #             file_paths.pop(file_paths.index(path_i))
