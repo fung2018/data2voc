@@ -7,14 +7,15 @@ import datetime
 import cv2
 
 
-def getFilePath(filePath):
+def get_file_path_with_type(file_path, file_type):
     filenames = []
-    sorted_path = os.listdir(filePath)
+    sorted_path = os.listdir(file_path)
     sorted_path.sort()
 
     for filename in sorted_path:
-        filename = os.path.join(filePath, filename)
-        filenames.append(filename)
+        if os.path.splitext(filename)[1] == file_type:
+            filename = os.path.join(file_path, filename)
+            filenames.append(filename)
     return filenames
 
 
@@ -54,14 +55,19 @@ def get_date():
 
 
 def json_to_xml(file_path, save_path):
-    file_paths = getFilePath(file_path)
+    file_paths = get_file_path_with_type(file_path, '.json')
+    
+    image_paths = file_paths
+    json_paths = file_paths
 
-    for path_i in file_paths:
-        if '.DS_Store' in path_i:
-            file_paths.pop(file_paths.index(path_i))
+    
 
-    image_paths = file_paths[0::2]
-    json_paths = file_paths[1::2]
+#     for path_i in file_paths:
+#         if '.DS_Store' in path_i:
+#             file_paths.pop(file_paths.index(path_i))
+
+#     image_paths = file_paths[0::2]
+#     json_paths = file_paths[1::2]
 
     i = 0
     for json_path in json_paths:
@@ -93,8 +99,10 @@ def json_to_xml(file_path, save_path):
         root.appendChild(node_source)
 
         print(image_paths[i])
-        img = cv2.imread(image_paths[i])
-        width, height, channels = img.shape
+#         img = cv2.imread(image_paths[i])
+#         width, height, channels = img.shape
+        
+        width, height, channels = [800, 600, 3]
 
         node_size = doc.createElement('size')
         node_width = doc.createElement('width')
@@ -165,11 +173,11 @@ def json_to_xml(file_path, save_path):
 
 if __name__ == '__main__':
 
-    file_path_ = '/xxxxxxx/'
+    json_path_ = '/xxxxxxx/'
     save_path_ = '/xxxxxxx/'
     save_path_ = check_path(save_path_)
     del_file(save_path_)
 
-    json_to_xml(file_path_, save_path_)
+    json_to_xml(json_path_, save_path_)
     print("done!")
 
